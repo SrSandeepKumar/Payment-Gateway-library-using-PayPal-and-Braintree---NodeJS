@@ -1,7 +1,5 @@
 (function(){
 
-	var paymentCompletionMessage;
-
 	var paypalPay = require('paypal-rest-sdk');
 
 	var configDetails = {

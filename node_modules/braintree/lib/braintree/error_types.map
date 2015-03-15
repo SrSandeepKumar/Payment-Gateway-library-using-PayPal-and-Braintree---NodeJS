@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "error_types.js",
+  "sourceRoot": "",
+  "sources": [
+    "error_types.coffee"
+  ],
+  "names": [],
+  "mappings": ";;AAAA;AAAA,CAAA,EAA8B,IAAvB,YAAP,EAAA;;AACA,CADA,EAC6B,IAAtB,WAAP,EADA;;AAEA,CAFA,EAEkC,IAA3B,gBAAP,EAFA;;AAGA,CAHA,EAGgC,IAAzB,cAAP,EAHA;;AAIA,CAJA,EAI8C,IAAvC,4BAAP,EAJA;;AAKA,CALA,EAKwB,IAAjB,MAAP,EALA;;AAMA,CANA,EAMsB,IAAf,IAAP,EANA;;AAOA,CAPA,EAO0B,IAAnB,QAAP,EAPA;;AAQA,CARA,EAQ0B,IAAnB,QAAP,EARA"
+}

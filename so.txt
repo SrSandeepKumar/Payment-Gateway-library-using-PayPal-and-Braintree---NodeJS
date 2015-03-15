@@ -1,0 +1,85 @@
+I'm trying to build a payment gateway library using *braintree's NodeJS* library, I'm making an *ajax* call from front end with the card data.
+
+> Client-Side
+
+`var card_data = {
+    type: "AmEx",
+	number: "343126234322468",
+	expire_month: "04",
+	expire_year: "2018",
+	cvv2: "524",
+	name: "sandeep",
+	price : "200",
+	currency : "USD"
+};`
+
+Ajax call,
+
+`
+$.ajax({
+    method: "GET",
+    url: "http://localhost:3000/paymentPath_braintree",
+    data: card_data
+}).done(function(message){
+    console.log(message);
+}).fail(function(data, message){
+    console.log(message);
+});
+`
+
+> Server-Side
+
+`var braintreePay = require('braintree');`
+
+`app.get("/payment_braintree", function(request, response){
+    var data = request.query;
+    var gateway = braintreePay.connect({
+    		environment: braintreePay.Environment.Sandbox,
+		    merchentId: "MymerchentID",
+		    publicKey: "MypublicKey",
+		    privateKey: "MyprivateKey",
+	});
+    var saleRequest = {
+    	    amount: data.price,
+	    	creditCard: {
+			    number: data.number,
+			    cvv: data.cvv2,
+			    expirationMonth: data.expire_month,
+			    expirationYear: data.expire_year.slice(2),
+			    cardHolder: data.name
+		    },
+		    options: {
+			    submitForSettlement: true
+		    }
+	};
+    gateway.transaction.sale(saleRequest, function(error, result){
+	    	if(error){
+	    		console.log(error.name);
+	     		throw error;
+		    }
+		    if(result.success){
+			    response.send(result.transaction.id);
+		    } else {
+			    response.send(result.message);
+		    }
+	});
+}); `
+
+I have cross checked everything, from keys and card data everything is in order but i am getting an error in callback after making *gateway.transaction.sale(...);* called **Authentication Error** . Which i tried to figure out for hours but could not get through.
+
+error object is 
+
+`authenticationError: Authentication Error
+    arguments: undefined
+    message: "Authentication Error"
+    name: "authenticationError"
+    stack: undefined
+    type: "authenticationError"`
+
+Where am i going wrong?
+----------
+I have created an account [sandbox.braintreegateway][1] those key credentials are from the account that i have created, i din't create an app like how its done in paypal.
+I am going through lack of understanding in Braintree integration.
+Are their any proper documented resource.
+
+  [1]: http://sandbox.braintreegateway.com
