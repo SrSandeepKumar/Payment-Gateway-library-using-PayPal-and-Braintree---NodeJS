@@ -4,7 +4,7 @@
 
 	var gateway = braintreePay.connect({
 		environment: braintreePay.Environment.Sandbox,
-		merchentId: "3h4ng5qpn2j8jp7q",
+		merchantId: "3h4ng5qpn2j8jp7q",
 		publicKey: "6wyvs7mmdytd9m6n",
 		privateKey: "5ca28de9963ecef3da002429073e43f9",
 	});
@@ -21,9 +21,7 @@
 			creditCard: {
 				number: data.number,
 				cvv: data.cvv2,
-				expirationMonth: data.expire_month,
-				expirationYear: data.expire_year.slice(2),
-				cardHolder: data.name
+				expirationDate: data.expire_month+"/"+data.expire_year.slice(2),
 			},
 			options: {
 				submitForSettlement: true
