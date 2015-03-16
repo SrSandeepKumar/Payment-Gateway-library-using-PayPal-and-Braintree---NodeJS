@@ -4,3 +4,13 @@
 .valid{
 	border-color: #CCCCCC;
 }
+
+.alert{ position: relative;
+  width: 40%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  float: right;
+  top: 20px;
+}

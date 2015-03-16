@@ -28,6 +28,7 @@
 		var removeInvalidClass = function(){
 			$(this).removeClass("invalid");
 			$(this).popover('destroy');
+			$("#myAlert").alert('close');
 		};
 
 		$(".cvv").keydown(checkAlpha);
@@ -54,16 +55,14 @@
 			$(".currencyDropDown").text("currency");
 			$("input").popover('destroy');
 			$("button").popover('destroy');
+			$("#myAlert").alert('close');
 		});
 
-		// $(".dropdown").click(function(){
-		// 	console.log($(".currencyDropDown").text());
-		// });
 
 		$(".submit").click(function(){
 			var holderName, cardNumber, cvv, price, expiryMonth, expiryYear, fullName, cardType, currency, error=false;
 			var visa = /^4[0-9]{12}(?:[0-9]{3})?$/;
-		    var masterCard = /^5[1-5][0-9]{14}$/;
+		    var mastercard = /^5[1-5][0-9]{14}$/;
 		    var amex = /^3[47][0-9]{13}$/;
 		    var discover = /^6(?:011|5[0-9]{2})[0-9]{12}$/;
 		    var cvv = /^[0-9]{3,4}/;
@@ -81,8 +80,8 @@
 				cardType = "amex";
 			} else if(cardNumber.match(visa)){
 				cardType = "visa";
-			} else if(cardNumber.match(masterCard)){
-				cardType = "masterCard";
+			} else if(cardNumber.match(mastercard)){
+				cardType = "mastercard";
 			} else if(cardNumber.match(discover)){
 				cardType = "discover";
 			} else {
@@ -184,18 +183,19 @@
 
 				var paymentPath;
 
-				if(cardType == "American Express"){
+				if(cardType == "amex"){
+					paymentPath = "payment_paypal";
 					if(currency == "USD"){
-						// paypal(card_data, transaction_data) //use paypal
+						//use paypal
 						paymentPath = "payment_paypal";
 					} else {
 						// return an error message - AMEX is possible to use only for USD
 					}
 				} else if(currency === "USD" || currency === "EUR" || currency === "AUD"){
-					// paypal(/*credentials*/) //use paypal
+					//use paypal
 					paymentPath = "payment_paypal";
 				} else {
-					// Braintree(/*credentials*/) //use braintree
+					//use braintree
 					paymentPath = "payment_braintree";
 				}
 
@@ -205,15 +205,14 @@
 					data: card_data
 				}).done(function(message){
 					console.log(message);
+					$("body").prepend("<div id='myAlert' class='alert alert-success'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Success : </strong>"+ message +"</div>");
 				}).fail(function(data, message){
 					console.log(message);
+					$("body").prepend("<div id='myAlert' class='alert alert-danger'><p class='close closeAlert'>&times;</p><strong>Success : </strong>"+ message +"</div>");
 				});
 			} else {
 				// Do nothing
 			}
-
-			
-
 
 		});
 		

@@ -1,6 +1,11 @@
 (function(){
 
-	var paypalPay = require('paypal-rest-sdk');
+	var paypalPay = require('paypal-rest-sdk'),
+		MongoClient = require('mongodb').MongoClient,
+		assert = require('assert');
+
+		//Connection URL
+		var url = "mongodb://localhost:27017/HotelQuickly";
 
 	var configDetails = {
 		"host": "api.sandbox.paypal.com",
@@ -40,12 +45,31 @@
 			
 			if(error){
 				console.log(error);
-				throw error;
+				response.status(500).send("Payment unable to process.");
 			}
 
 			if(result){
-				console.log("create payment response");
-				response.status(200).send(JSON.stringify(result));
+				console.log("Payment resulted successfully.");
+				var insertDocuments = function(db, callback){
+					var collection = db.collection('documents');
+					var transactionData = {"paymentPortal": "paypal", "card_data": data, "transactionInfo": result};
+					collection.insert(transactionData, function(error, result){
+						assert.equal(error, null);
+						console.log("Transaction information stored successfully.");
+						callback(result);
+					});
+				};
+
+				//Use connect method to connect to the server
+				MongoClient.connect(url, function(error, db){
+					assert.equal(null, error);
+					console.log("connected to DB successfully.");
+
+					insertDocuments(db, function(){
+				        db.close();
+					});
+				});
+				response.status(200).send("The payment was successfull, transaction id: " + result.id);
 			}
 
 		});

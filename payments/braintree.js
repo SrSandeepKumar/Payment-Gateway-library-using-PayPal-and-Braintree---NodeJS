@@ -1,6 +1,11 @@
 (function(){
 
-	var braintreePay = require('braintree');
+	var braintreePay = require('braintree'),
+		MongoClient = require('mongodb').MongoClient,
+		assert = require('assert');
+
+		//Connection URL
+		var url = "mongodb://localhost:27017/HotelQuickly";
 
 	var gateway = braintreePay.connect({
 		environment: braintreePay.Environment.Sandbox,
@@ -11,8 +16,7 @@
 
 	module.exports.braintree = function(request, response){
 		
-		console.log("comming from the exports of braintree");
-		console.log(request.query);
+		console.log("Reached braintree portal");
 
 		var data = request.query;
 
@@ -30,17 +34,38 @@
 		};
 
 		gateway.transaction.sale(saleRequest, function(error, result){
-			console.log("simply");
-
+			
 			if(error){
 				console.log(error.name);
-				throw error;
+				response.status(404).send(error.name);
 			}
 
 			if(result.success){
-				response.send(result.transaction.id);
+			
+				var insertDocuments = function(db, callback){
+					var collection = db.collection('documents');
+					var transactionData = {"paymentPortal": "braintree", "card_data": data, "transactionInfo": result.transaction};
+					collection.insert(transactionData, function(error, result){
+						assert.equal(error, null);
+						console.log("Transaction information stored successfully.");
+						callback(result);
+					});
+				};
+
+				//Use connect method to connect to the server
+				MongoClient.connect(url, function(error, db){
+					assert.equal(null, error);
+					console.log("connected to DB successfully.");
+
+					insertDocuments(db, function(){
+				        db.close();
+					});
+				});
+
+				response.status(200).send("The payment was successfull, transaction id: " + result.transaction.id);
+				
 			} else {
-				response.send(result.message);
+				response.status(404).send(result.message);
 			}
 		});
 		

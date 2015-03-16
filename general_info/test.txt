@@ -1,0 +1,63 @@
+Test with account credentials - These are from sandbox
+
+PayPal - payment successfull
+
+AmEx 
+	sandkumar91-Business-AMEX_api1.gmail.com
+    Credit card number: 375615408990440
+    Credit card type: American Express
+    Expiration date: 03/2020
+
+    sandkumar91-AMEX@gmail.com
+    Credit card number: 349276736528783
+    Credit card type: American Express
+    Expiration date: 03/2020
+ 
+visa: 
+	sandkumar91-Visa@gmail.com
+	Credit card number: 4032039316825738
+	Credit card type: Visa
+	Expiration date: 03/2020
+
+discover: 
+	sandkumar91-discover@gmail.com
+	Credit card number: 6011863043864292
+	Credit card type: Discover
+	Expiration date: 03/2020
+
+mastercard:
+	sandkumar91-MasterCard@gmail.com
+	Credit card number: 5110923711752203
+	Credit card type: Mastercard
+	Expiration date: 03/2020
+
+	sandeep-mastercard@gmail.com
+	Credit card number: 5110922833614481
+	Credit card type: MasterCard
+	Expiration date: 03/2020
+
+
+Braintree - payment successfull
+
+visa: 
+	Credit card number: 4111111111111111
+
+mastercard:
+	Credit card number: 5555555555554444
+
+amex:
+    Credit card number: 371449635398431
+
+discover:
+	Credit card number: 6011111111111117
+
+
+	if card = amex
+		currency = usd goto paypal
+	else
+		give error
+	
+	if currency = usd or eur or aud
+		got to paypal
+	else
+	 	got to braintree
