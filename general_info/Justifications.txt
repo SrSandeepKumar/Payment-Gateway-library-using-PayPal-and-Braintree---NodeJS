@@ -19,3 +19,19 @@ insertDocuments(db, function(){
       db.close();
     });
 });
+
+Storage - MongoDB
+
+How do i debug ?
+	I use Node debugger from here "https://github.com/node-inspector/node-inspector", which is basically a inspector like in any browser.
+
+
+Steps:
+1. run the mongodb server
+	$mongod - from terminal/CMD
+			  port 27017 will be available
+2. node index.js 
+			  to run the node app
+    or node-debug index.js 
+    		  to run the app in debug mode
+3. success or error message will be displayed on the screen

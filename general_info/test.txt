@@ -50,14 +50,3 @@ amex:
 
 discover:
 	Credit card number: 6011111111111117
-
-
-	if card = amex
-		currency = usd goto paypal
-	else
-		give error
-	
-	if currency = usd or eur or aud
-		got to paypal
-	else
-	 	got to braintree

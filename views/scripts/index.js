@@ -67,6 +67,8 @@
 		    var discover = /^6(?:011|5[0-9]{2})[0-9]{12}$/;
 		    var cvv = /^[0-9]{3,4}/;
 
+		    $("#myAlert").alert('close');
+
 			fullName = $(".fullName").val();
 			holderName = $(".cardHolderName").val();
 			cardNumber = $(".cardNumber").val();
@@ -181,35 +183,43 @@
 					CustomerFullname : fullName
 				};
 
-				var paymentPath;
+				var paymentPath, proceedToPayment = false;
 
 				if(cardType == "amex"){
 					paymentPath = "payment_paypal";
 					if(currency == "USD"){
+						proceedToPayment = true;
 						//use paypal
 						paymentPath = "payment_paypal";
 					} else {
+						proceedToPayment = false;
 						// return an error message - AMEX is possible to use only for USD
+						$("body").prepend("<div id='myAlert' class='alert alert-danger'><p class='close closeAlert'>&times;</p><strong>Error </strong> AMEX is possible to use only for USD </div>");
 					}
 				} else if(currency === "USD" || currency === "EUR" || currency === "AUD"){
 					//use paypal
+					proceedToPayment = true;
 					paymentPath = "payment_paypal";
 				} else {
 					//use braintree
+					proceedToPayment = true;
 					paymentPath = "payment_braintree";
 				}
 
-				$.ajax({
-					method: "GET",
-					url: "http://localhost:3000/"+paymentPath,
-					data: card_data
-				}).done(function(message){
-					console.log(message);
-					$("body").prepend("<div id='myAlert' class='alert alert-success'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Success : </strong>"+ message +"</div>");
-				}).fail(function(data, message){
-					console.log(message);
-					$("body").prepend("<div id='myAlert' class='alert alert-danger'><p class='close closeAlert'>&times;</p><strong>Success : </strong>"+ message +"</div>");
-				});
+				if(proceedToPayment){
+					$.ajax({
+						method: "GET",
+						url: "http://localhost:3000/"+paymentPath,
+						data: card_data
+					}).done(function(message){
+						console.log(message);
+						$("body").prepend("<div id='myAlert' class='alert alert-success'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Success : </strong>"+ message +"</div>");
+					}).fail(function(data, message){
+						console.log(message);
+						$("body").prepend("<div id='myAlert' class='alert alert-danger'><p class='close closeAlert'>&times;</p><strong>Error </strong>"+ message +"</div>");
+					});
+				}
+				
 			} else {
 				// Do nothing
 			}
