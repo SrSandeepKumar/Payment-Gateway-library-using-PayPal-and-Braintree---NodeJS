@@ -2,7 +2,7 @@ Test with account credentials - These are from sandbox
 
 PayPal - payment successfull
 
-AmEx 
+AmEx:
 	sandkumar91-Business-AMEX_api1.gmail.com
     Credit card number: 375615408990440
     Credit card type: American Express

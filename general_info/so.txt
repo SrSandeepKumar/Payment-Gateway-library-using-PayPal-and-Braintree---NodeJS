@@ -87,4 +87,6 @@ Are their any proper documented resource.
   =======================================================================================================================================
   
   issue resolved, Important aspects to look upon while using braintree
-  	|_ After initializing the gateway put a brakpoint and look for the PROPER NAMING CONVENTIONS, if naming goes wrong the process 		   becomes a pain (Basically everywhere :P ) 
+  	|_ After initializing the gateway put a brakpoint and look for the PROPER NAMING CONVENTIONS, 
+  	   if naming goes wrong the process
+  	   becomes a pain (Basically everywhere :P ) 
